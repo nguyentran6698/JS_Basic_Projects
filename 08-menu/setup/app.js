@@ -72,3 +72,66 @@ const menu = [
     desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
   },
 ];
+const container = document.querySelector(".section-center");
+const btnContainer = document.querySelector(".btn-container");
+//DOMContentLoaded
+window.addEventListener("DOMContentLoaded", function () {
+  displayMenuItem(menu);
+  displayMenuButton();
+});
+function displayMenuButton() {
+  const categories = menu.reduce(
+    function (values, item) {
+      if (!values.includes(item.category)) {
+        values.push(item.category);
+      }
+      return values;
+    },
+    ["all"]
+  );
+  const categoryBtns = categories
+    .map(function (category) {
+      return `
+      <button class ="filter-btn" type = "button" data-id=${category}>${category}</button>
+      `;
+    })
+    .join("");
+  btnContainer.innerHTML = categoryBtns;
+  const filterBtns = document.querySelectorAll(".filter-btn");
+  filterBtns.forEach(function (btn) {
+    btn.addEventListener("click", function (e) {
+      const category = e.currentTarget.dataset.id;
+      const filterMenu = menu.filter(function (item) {
+        return item.category == category;
+      });
+      if (category == "all") {
+        displayMenuItem(menu);
+      } else {
+        displayMenuItem(filterMenu);
+      }
+    });
+  });
+}
+function displayMenuItem(menuItem) {
+  const value = menuItem.map(function (item) {
+    // need to create an attritube
+    return `
+     <!-- single item -->
+        <article class="menu-item">
+          <img src=${item["img"]} class="photo" alt="" />
+          <div class="item-info">
+            <header>
+              <h4>${item["title"]}</h4>
+              <h4 class="price">$${item["price"]}</h4>
+            </header>
+            <p class="item-text">
+              ${item["desc"]}
+            </p>
+          </div>
+        </article>
+        <!-- end of single item -->
+    
+    `;
+  });
+  container.innerHTML = value.join("");
+}

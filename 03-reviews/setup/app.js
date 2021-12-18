@@ -37,3 +37,47 @@ const reviews = [
       "Edison bulb put a bird on it humblebrag, marfa pok pok heirloom fashion axe cray stumptown venmo actually seitan. VHS farm-to-table schlitz, edison bulb pop-up 3 wolf moon tote bag street art shabby chic. ",
   },
 ];
+let currentIndex = 0;
+
+const img = document.querySelector("#person-img");
+const job = document.querySelector("#job");
+const author = document.querySelector("#author");
+const info = document.querySelector("#info");
+
+const randomBtn = document.querySelector(".random-btn");
+const nextBtn = document.querySelector(".next-btn");
+const prevBtn = document.querySelector(".prev-btn");
+// now we need to handle the click
+
+window.addEventListener("DOMContentLoaded", function () {
+  const review = reviews[currentIndex];
+  setValue(review);
+});
+
+nextBtn.addEventListener("click", function () {
+  currentIndex++;
+  if (currentIndex > reviews.length - 1) {
+    currentIndex = 0;
+  }
+  setValue(reviews[currentIndex]);
+});
+prevBtn.addEventListener("click", function () {
+  currentIndex--;
+  if (currentIndex < 0) {
+    currentIndex = reviews.length - 1;
+  }
+  setValue(reviews[currentIndex]);
+});
+function setValue(review) {
+  img.setAttribute("src", review.img);
+  job.textContent = review.job;
+  author.textContent = review.name;
+  info.textContent = review.text;
+}
+randomBtn.addEventListener("click", function () {
+  currentIndex = randomValue();
+  setValue(reviews[currentIndex]);
+});
+function randomValue() {
+  return Math.floor(Math.random() * reviews.length);
+}
